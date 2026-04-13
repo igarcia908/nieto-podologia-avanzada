@@ -394,7 +394,7 @@ initSliders();
     ortopodologia: {
       badge: 'Ortopodología',
       title: 'Plantillas y ortesis a medida',
-      img: 'images/pexels-photo-6111616.jpeg',
+      img: 'images/pexels-photo-6111616.jpg',
       imgAlt: 'Plantillas ortopédicas personalizadas',
       exampleImg: 'images/example_orto.jpeg',
       exampleAlt: 'Ejemplo de plantilla ortopédica personalizada',

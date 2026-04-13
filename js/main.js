@@ -86,20 +86,21 @@ document.querySelectorAll('.rv').forEach(el => revealObserver.observe(el));
 const sections = document.querySelectorAll('section[id]');
 const navLinks  = document.querySelectorAll('.nav__link[href^="#"]');
 
-const sectionObserver = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      navLinks.forEach(link => {
-        link.classList.toggle(
-          'nav__link--active',
-          link.getAttribute('href') === '#' + entry.target.id
-        );
-      });
+function updateActiveNav() {
+  const threshold = header.offsetHeight + 20;
+  let currentId = '';
+  sections.forEach(section => {
+    if (section.getBoundingClientRect().top <= threshold) {
+      currentId = section.id;
     }
   });
-}, { threshold: 0.35, rootMargin: '-60px 0px -40% 0px' });
+  navLinks.forEach(link => {
+    link.classList.toggle('nav__link--active', link.getAttribute('href') === '#' + currentId);
+  });
+}
 
-sections.forEach(s => sectionObserver.observe(s));
+window.addEventListener('scroll', updateActiveNav, { passive: true });
+updateActiveNav();
 
 /* =============================================
    COUNTER ANIMATION
@@ -395,6 +396,8 @@ initSliders();
       title: 'Plantillas y ortesis a medida',
       img: 'images/pexels-photo-6111616.jpeg',
       imgAlt: 'Plantillas ortopédicas personalizadas',
+      exampleImg: 'images/example_orto.jpeg',
+      exampleAlt: 'Ejemplo de plantilla ortopédica personalizada',
       desc: `<p>Fabricamos plantillas y ortesis plantares completamente personalizadas mediante un <strong>estudio biomecánico exhaustivo</strong> en estática y dinámica. Analizamos la pisada y la alineación de todo el miembro inferior para detectar desequilibrios y corregirlos desde la base.</p>
              <p>Las plantillas se elaboran con materiales de alta calidad adaptados a cada tipo de calzado y actividad: uso cotidiano, práctica deportiva o calzado de trabajo. El proceso incluye:</p>
              <ul>
@@ -411,6 +414,8 @@ initSliders();
       title: 'Biomecánica y lesiones deportivas',
       img: 'images/pexels-photo-2526878.jpeg',
       imgAlt: 'Análisis biomecánico deportivo',
+      exampleImg: 'images/example_podo_deportiva.jpg',
+      exampleAlt: 'Ejemplo de plantilla deportiva personalizada',
       desc: `<p>El pie del deportista soporta cargas hasta <strong>tres veces el peso corporal</strong> en cada zancada. Un pequeño desequilibrio puede desencadenar lesiones en cadena en rodilla, cadera o columna. Nuestro análisis biomecánico completo detecta y corrige estos problemas antes de que se conviertan en lesiones crónicas.</p>
              <p>Trabajamos con deportistas de todos los niveles, desde aficionados hasta atletas de élite, en disciplinas como running, fútbol, ciclismo, tenis y más.</p>
              <ul>
@@ -500,7 +505,7 @@ initSliders();
     const exampleSection = data.casesSection
       ? `<div class="svc-modal__section-title">Casos reales · Resultados cirugía MIS</div>${CASE_COMPS_HTML}`
       : `<div class="svc-modal__section-title">Ejemplo</div>
-             <div class="svc-modal__example-img"><img src="${data.img}" alt="${data.imgAlt}" loading="lazy"></div>`;
+             <div class="svc-modal__example-img"><img src="${data.exampleImg || data.img}" alt="${data.exampleAlt || data.imgAlt}" loading="lazy"></div>`;
 
     inner.innerHTML = `
       <div class="svc-modal__hero">
